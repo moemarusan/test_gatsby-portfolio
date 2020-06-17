@@ -10,9 +10,11 @@ const IndexPage = ({data}) => (
     <SEO title="Home" />
     <h1>Hello Great Gatsby</h1>
     {data.allWorksYaml.edges.map(edge => {
-    const work = edge.node 
+    const work = edge.node; 
     return <div>
-    {work.title} - {work.category} - {work.year} 
+      <Link to={`/works/${work.slug}`}>
+        {work.title} - {work.category} - {work.year}
+      </Link>
     </div>
     })}
     <Link to="/page-2/">Go to page 2</Link> <br />
@@ -20,6 +22,7 @@ const IndexPage = ({data}) => (
   </Layout>
 )
 
+// edgesとnode使うのは複数取り出すときっぽい、worksYamlだと最初の一つしか取り出せなかった
 export const query = graphql`
     query {
       allWorksYaml {
@@ -27,7 +30,8 @@ export const query = graphql`
           node {
             title,
             category,
-            year
+            year,
+            slug
           }
         }
       }
